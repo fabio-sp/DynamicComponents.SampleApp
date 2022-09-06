@@ -1,0 +1,49 @@
+﻿@page "/"
+@inject ComponentService ComponentService
+
+<PageTitle>Form di contatto</PageTitle>
+<form>
+
+    <div class="form-group">
+        <label class="form-label" for="type-change-dropdown">Selezionare una modalità di contatto:</label>
+        <select id="type-change-dropdown" @onchange="OnTypeDropdownChange" class="form-control mb-2">
+            <option value="">---</option>            
+            @foreach(var component in componentsToRender)
+            {
+                <option value="@component.Key">@component.Key</option>
+            }
+        </select>
+    </div>
+
+    @if (selectedType != null)
+    {
+        <DynamicComponent Type="@selectedType" Parameters="@componentParameters"></DynamicComponent>
+    }
+</form>
+
+@code {
+    private Type selectedType;
+    private Dictionary<string, object> componentParameters = new Dictionary<string, object>();
+    private Dictionary<string, RenderComponent> componentsToRender;
+
+    protected override void OnInitialized()
+    {
+        componentsToRender = ComponentService.GetRenderComponents();
+    }
+
+    private void OnTypeDropdownChange(ChangeEventArgs changeEventArgs)
+    {
+        if (componentsToRender.ContainsKey(changeEventArgs.Value.ToString()))
+        {
+            var selectedComponentMetadata = componentsToRender[changeEventArgs.Value.ToString()];
+            selectedType = selectedComponentMetadata.Type;
+            componentParameters = selectedComponentMetadata.Parameters;
+        }
+        else
+        {
+            selectedType = null;
+            componentParameters = new Dictionary<string, object>();
+        }
+    }
+
+}
