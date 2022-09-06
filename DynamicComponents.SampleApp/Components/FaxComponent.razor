@@ -21,8 +21,5 @@
 
     private string Number;
 
-    private async Task HandleClick(MouseEventArgs args)
-    {
-        await OnExportButtonClick.InvokeAsync($"{CountryCode} {Number}");
-    }
+    private void HandleClick(MouseEventArgs args) => OnExportButtonClick.InvokeAsync($"{CountryCode} {Number}");
 }

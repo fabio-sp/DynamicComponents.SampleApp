@@ -14,8 +14,7 @@ namespace DynamicComponents.SampleApp.Services
         }
 
         public Dictionary<string, RenderComponent> GetRenderComponents()
-        {
-            return new Dictionary<string, RenderComponent>()
+            => new()
             {
                 {"Posta ordinaria", new RenderComponent() { Type = typeof(AddressComponent) } },
 
@@ -27,11 +26,7 @@ namespace DynamicComponents.SampleApp.Services
                     }
                 }}
             };
-        }
 
-        private async Task OnExportClick(string faxNumberValue)
-        {
-            await iJSRuntime.InvokeVoidAsync("alert", faxNumberValue);
-        }
+        private void OnExportClick(string faxNumberValue) => iJSRuntime.InvokeVoidAsync("alert", faxNumberValue);
     }
 }
